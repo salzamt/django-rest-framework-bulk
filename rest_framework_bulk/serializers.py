@@ -5,16 +5,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ListSerializer
 
 
-# __all__ = [
-#     'BulkListSerializer',
-#     'BulkSerializerMixin',
-# ]
-
-
 class BulkSerializerMixin(object):
     def to_internal_value(self, data):
         ret = super(BulkSerializerMixin, self).to_internal_value(data)
-
         id_attr = getattr(self.Meta, 'update_lookup_field', 'id')
         request_method = getattr(getattr(self.context.get('view'), 'request'), 'method', '')
 
@@ -37,9 +30,6 @@ class BulkListSerializer(ListSerializer):
 
     def update(self, queryset, all_validated_data):
         id_attr = getattr(self.child.Meta, 'update_lookup_field', 'id')
-
-        import ipdb;
-        ipdb.set_trace()
 
         all_validated_data_by_id = {
             i.pop(id_attr): i
