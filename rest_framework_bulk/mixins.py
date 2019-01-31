@@ -1,4 +1,6 @@
+from django.db import IntegrityError
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.response import Response
 
@@ -27,7 +29,14 @@ class BulkCreateModelMixin(CreateModelMixin):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def perform_bulk_create(self, serializer):
-        return self.perform_create(serializer)
+        try:
+            return self.perform_create(serializer)
+        except IntegrityError as ex:
+            """
+            unique[_together] cannot be validated in bulk for the passed set 
+            itself therefore we react on the database exception. 
+            """
+            raise ValidationError(ex)
 
 
 class BulkUpdateModelMixin(object):
