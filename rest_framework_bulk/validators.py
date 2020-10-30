@@ -1,7 +1,6 @@
 from django.db import models
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
-from rest_framework.compat import unicode_to_repr
 from rest_framework.exceptions import ValidationError
 from rest_framework.utils.representation import smart_repr
 
@@ -53,10 +52,10 @@ class UniqueValidator:
             raise ValidationError(self.message)
 
     def __repr__(self):
-        return unicode_to_repr('<%s(queryset=%s)>' % (
+        return '<%s(queryset=%s)>' % (
             self.__class__.__name__,
             smart_repr(self.queryset)
-        ))
+        )
 
 
 class UniqueTogetherValidator:
@@ -138,11 +137,11 @@ class UniqueTogetherValidator:
             raise ValidationError(self.message.format(field_names=field_names))
 
     def __repr__(self):
-        return unicode_to_repr('<%s(queryset=%s, fields=%s)>' % (
+        return '<%s(queryset=%s, fields=%s)>' % (
             self.__class__.__name__,
             smart_repr(self.queryset),
             smart_repr(self.fields)
-        ))
+        )
 
 
 class BaseUniqueForValidator:
@@ -202,12 +201,12 @@ class BaseUniqueForValidator:
             raise ValidationError({self.field: message})
 
     def __repr__(self):
-        return unicode_to_repr('<%s(queryset=%s, field=%s, date_field=%s)>' % (
+        return '<%s(queryset=%s, field=%s, date_field=%s)>' % (
             self.__class__.__name__,
             smart_repr(self.queryset),
             smart_repr(self.field),
             smart_repr(self.date_field)
-        ))
+        )
 
 
 class UniqueForDateValidator(BaseUniqueForValidator):
